@@ -1,0 +1,35 @@
+{
+  "name": "discord-agent-orchestrator",
+  "version": "0.0.0",
+  "type": "module",
+  "imports": {
+    "#*": "./agent/*",
+    "#evals/*": "./evals/*"
+  },
+  "scripts": {
+    "build": "eve build",
+    "deploy": "eve deploy",
+    "dev": "eve dev",
+    "eval": "eve eval",
+    "start": "eve start",
+    "typecheck": "tsc",
+    "test": "node --test tests/*.test.ts",
+    "doctor": "node --env-file-if-exists=.env scripts/doctor.mjs",
+    "register": "node --env-file-if-exists=.env scripts/register.mjs"
+  },
+  "dependencies": {
+    "@vercel/connect": "2.2.0",
+    "ai": "^7.0.137",
+    "eve": "^0.77.0",
+    "just-bash": "3.6.0",
+    "zod": "4.5.4"
+  },
+  "devDependencies": {
+    "@types/node": "24.x",
+    "typescript": "7.0.2",
+    "vercel": "63.1.2"
+  },
+  "engines": {
+    "node": "24.x"
+  }
+}

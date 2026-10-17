@@ -1,0 +1,11 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { authorize } from '../agent/lib/access.ts';
+const caller={guildId:'server',channelId:'salon',user:{id:'user-a',isBot:false}};
+const env={DISCORD_GUILD_ID:'server',DISCORD_ALLOWED_USER_IDS:'user-a, user-b'};
+test('les deux utilisateurs sont autorisés',()=>{assert.ok(authorize(caller,env)); assert.ok(authorize({...caller,user:{id:'user-b',isBot:false}},env));});
+test('refuse une configuration vide',()=>assert.equal(authorize(caller,{}),null));
+test('refuse un inconnu',()=>assert.equal(authorize({...caller,user:{id:'inconnu',isBot:false}},env),null));
+test('refuse un bot',()=>assert.equal(authorize({...caller,user:{id:'user-a',isBot:true}},env),null));
+test('refuse les messages privés et autres serveurs',()=>{assert.equal(authorize({...caller,guildId:undefined},env),null);assert.equal(authorize({...caller,guildId:'autre'},env),null);});
+test('limite les salons si configurés',()=>{assert.equal(authorize(caller,{...env,DISCORD_ALLOWED_CHANNEL_IDS:'autre'}),null);assert.ok(authorize(caller,{...env,DISCORD_ALLOWED_CHANNEL_IDS:'salon'}));});
